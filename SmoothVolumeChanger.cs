@@ -18,7 +18,7 @@ public class SmoothVolumeChanger : MonoBehaviour
         else
             _alarmSound.Play();
 
-        _currentCorutine = StartCoroutine(SmoothVolumeChange(_volumeChangeRate, _maxVolume));
+        _currentCorutine = StartCoroutine(SmoothVolumeChange(_maxVolume));
     }
 
     public void SmoothVolumeDown()
@@ -26,14 +26,14 @@ public class SmoothVolumeChanger : MonoBehaviour
         if (_currentCorutine != null)
             StopCoroutine(_currentCorutine);
 
-        _currentCorutine = StartCoroutine(SmoothVolumeChange(-_volumeChangeRate, _minVolume));
+        _currentCorutine = StartCoroutine(SmoothVolumeChange(_minVolume));
     }
 
-    public IEnumerator SmoothVolumeChange(float volumeChangeRate, int target)
+    public IEnumerator SmoothVolumeChange(int target)
     {
         while (_alarmSound.volume != target)
         {
-            _alarmSound.volume = Mathf.MoveTowards(_alarmSound.volume, _maxVolume, volumeChangeRate * Time.deltaTime);
+            _alarmSound.volume = Mathf.MoveTowards(_alarmSound.volume, target, _volumeChangeRate * Time.deltaTime);
             yield return null;
         }
     }
