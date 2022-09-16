@@ -8,26 +8,25 @@ public class SmoothVolumeChanger : MonoBehaviour
     [SerializeField] private float _volumeChangeRate;
 
     private Coroutine _currentCorutine;
-    private bool _corutineIsRunning;
     private readonly int _maxVolume = 1;
 
     public void SmoothVolumeUp()
     {
-        if (_corutineIsRunning)
+        if (_currentCorutine != null)
         {
             StopCoroutine(_currentCorutine);
             _currentCorutine = StartCoroutine(SmoothVolumeChange(_volumeChangeRate));
         }
         else
         {
+            _alarmSound.Play();
             _currentCorutine = StartCoroutine(SmoothVolumeChange(_volumeChangeRate));
-            _corutineIsRunning = true;
         }
     }
 
     public void SmoothVolumeDown()
     {
-        if (_corutineIsRunning)
+        if (_currentCorutine != null)
         {
             StopCoroutine(_currentCorutine);
             _currentCorutine = StartCoroutine(SmoothVolumeChange(-_volumeChangeRate));
